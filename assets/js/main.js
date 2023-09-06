@@ -1,5 +1,8 @@
 const pokemonList = document.getElementById('pokemonList')
 const loadMoreButton = document.getElementById('loadMoreButton')
+
+
+const maxRecords = 151
 const limit = 30
 let offset = 0
 
@@ -27,7 +30,16 @@ loadPokemonItems(offset, limit)//Aqui ele já faz o upload dos 30 pokemons inici
 
 loadMoreButton.addEventListener('click', () => { //aqui,ao clicar, mais 30 pokemons aparecem
     offset += limit
-    loadPokemonItems(offset, limit)
+
+    const qtdRecordsWithNextPage = offset + limit
+
+    if(qtdRecordsWithNextPage >= maxRecords){//Regra de paginação
+        const newLimit = maxRecords - offset
+        loadPokemonItems(offset, newLimit)
+        loadMoreButton.parentElement.removeChild(loadMoreButton)
+    } else {
+        loadPokemonItems(offset, limit)
+    }
 })
 
 
